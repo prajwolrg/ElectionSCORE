@@ -16,8 +16,7 @@ class Election(IconScoreBase):
 
 	def __init__(self, db: IconScoreDatabase) -> None:
 		super().__init__(db)
-
-		self._addr_coordinator = VarDB(Election._ADDR_COORDINATOR, db, str)
+		self._addr_coordinator = VarDB(Election._ADDR_COORDINATOR, db, Address)
 		self._registration_open = VarDB(Election._REGISTRATION_OPEN, db, bool)
 		#self._registration_deadline = VarDB(Election._REGISTRATION_DEADLINE, db, int)
 		#self._voting_deadline = VarDB(Election._VOTING_DEADLINE, db, int)
@@ -50,12 +49,9 @@ class Election(IconScoreBase):
 		return __wrapper
 
 	@external
-	def register(self, candidate:bool = False) -> None:
+	def register_as_candidate(self) -> None:
 		if self._registration_open.get():
-			if candidate:
-				self._pending_candidates.put(self.msg.sender)
-			else:
-				self._pending_voters.put(self.msg.sender)
+			self._pending_candidates.put(self.msg.sender)
 		else:
 			revert('The registration is already closed.')
 
@@ -75,8 +71,12 @@ class Election(IconScoreBase):
 	def is_registration_open(self) -> bool:
 		return self._registration_open.get()
 
+	@external(readonly=True)
+	def coordinator_address(self) -> str:
+		return self._addr_coordinator.get()
+
 	@external
-	@only_owner
+	# @only_owner
 	def approve_candidates(self, candidate:Address) -> None:
 		if candidate in self._pending_candidates & self._registration_open.get():
 			if candidate in self._registered_candidates:
@@ -87,7 +87,7 @@ class Election(IconScoreBase):
 			revert(f'{candidate} has not registered yet.')
 
 	@external
-	@only_owner
+	# @only_owner
 	def approve_voters(self, voter:Address) -> None:
 		if voter in self._pending_candidates & self._registration_open.get():
 			if voter in self._registered_voters:
@@ -106,12 +106,12 @@ class Election(IconScoreBase):
 	#		 revert(f'The registration is already closed.')
 
 	@external
-	@only_owner
+	# @only_owner
 	def toggle_registration(self) -> None:
 		self._registration_open.set(not self._registration_open.get())
 
 	@external
-	@only_owner
+	# @only_owner
 	def close_voting(self) -> None:
 		if (self._voting_open.get()):
 			self._voting_open.set(False)

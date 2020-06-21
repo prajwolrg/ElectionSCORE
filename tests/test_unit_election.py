@@ -9,3 +9,12 @@ class TestElection(ScoreTestCase):
 
 	def test_hello(self):
 		self.assertEqual(self.score.hello(), "Hello")
+
+	def test_on_install(self):
+		#Check if the SCORE owner is set as coordinator
+		self.assertEqual(self.test_account1, self.score.owner)
+		self.assertEqual(self.test_account1, self.score.coordinator_address())
+		#Registration should be open by default
+		self.assertEqual(self.score.is_registration_open(), True)
+		#Voting should be closed by default
+		self.assertEqual(self.score.is_voting_open(), False)
