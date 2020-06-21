@@ -17,15 +17,15 @@ class Election(IconScoreBase):
 	def __init__(self, db: IconScoreDatabase) -> None:
 		super().__init__(db)
 
-		self._addr_coordinator = VarDB(Voting._ADDR_COORDINATOR, db, str)
-		self._registration_open = VarDB(Voting._REGISTRATION_OPEN, db, bool)
-		#self._registration_deadline = VarDB(Voting._REGISTRATION_DEADLINE, db, int)
-		#self._voting_deadline = VarDB(Voting._VOTING_DEADLINE, db, int)
-		self._pending_candidates = ArrayDB(Voting._PENDING_CANDIDATES, db, bool)
-		self._pending_voters = ArrayDB(Voting._PENDING_VOTERS, db, str)
-		self._registered_candidates = ArrayDB(Voting._REGISTERED_CANDIDATES, db, str)
-		self._registered_voters = ArrayDB(Voting._REGISTERED_VOTERS, db, str)
-		self._voting_open = VarDB(Voting._VOTING_OPEN, db, bool)
+		self._addr_coordinator = VarDB(Election._ADDR_COORDINATOR, db, str)
+		self._registration_open = VarDB(Election._REGISTRATION_OPEN, db, bool)
+		#self._registration_deadline = VarDB(Election._REGISTRATION_DEADLINE, db, int)
+		#self._voting_deadline = VarDB(Election._VOTING_DEADLINE, db, int)
+		self._pending_candidates = ArrayDB(Election._PENDING_CANDIDATES, db, bool)
+		self._pending_voters = ArrayDB(Election._PENDING_VOTERS, db, str)
+		self._registered_candidates = ArrayDB(Election._REGISTERED_CANDIDATES, db, str)
+		self._registered_voters = ArrayDB(Election._REGISTERED_VOTERS, db, str)
+		self._voting_open = VarDB(Election._VOTING_OPEN, db, bool)
 
 	def on_install(self) -> None:
 		super().on_install()
