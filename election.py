@@ -52,8 +52,13 @@ class Election(IconScoreBase):
 	def register_as_candidate(self) -> None:
 		if self._registration_open.get():
 			self._pending_candidates.put(self.msg.sender)
+			return('Success')
 		else:
 			revert('The registration is already closed.')
+
+	@external(readonly=True)
+	def get_pending_registration_number(self) -> int:
+		return len(self._pending_candidates)
 
 	@external(readonly=True)
 	def get_candidates(self) -> list:

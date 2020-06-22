@@ -18,3 +18,9 @@ class TestElection(ScoreTestCase):
 		self.assertEqual(self.score.is_registration_open(), True)
 		#Voting should be closed by default
 		self.assertEqual(self.score.is_voting_open(), False)
+
+	# def test_registration(self):
+	# 	self.set_tx(self.test_account2)
+	# 	self.score.register_as_candidate()
+
+	# 	print(self.score.get_candidates())
